@@ -40,7 +40,7 @@ Before you use ANGRYPUPPY, you will require two things:
 - Cobalt Strike -- https://cobaltstrike.com
 - BloodHound -- https://github.com/BloodHoundAD/BloodHound
 
-Once you have obtained these, clone the ANGRYPUPPY repository. Due to limitations in Aggressor's Java import, we have included PowerShell and Linux/MacOS shell scripts to make the appropriate changes to the path we are importing json.jar from.
+Once you have obtained these, clone the ANGRYPUPPY repository.
 
 Once you have run the appropriate script for your operating system, you're ready to get started.
 

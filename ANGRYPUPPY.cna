@@ -6,9 +6,9 @@
 
 # org.json from https://mvnrepository.com/artifact/org.json/json
 # Documentation - https://stleary.github.io/JSON-java/
-import org.json.* from: {{PATH}};
 include(script_resource("cypher.cna"));
 include(script_resource("utils.cna"));
+include(script_resource("json.cna"));
 #include(script_resource("com-exec.cna"));
 
 global('@edges @nodes @final $waitFor $currentBid $nextLabel $True $False $attackActive $pos $listener $psexec $mimikatz $randomPuppy $machineNo $jsonFile $lateralMethod $realm $listenerChoice $operator');
@@ -19,13 +19,13 @@ sub parseNodes {
     $json = $1;
 
     # Create new JSONObject from string
-    $obj = [new JSONObject: $json];
+    $obj = new_jsonobject($json);
 
     # Create a new JSONArray from the "nodes" key
-    $nodeArray = [new JSONArray: [$obj get: "nodes"]];
+    $nodeArray = new_jsonarray(json_value($obj, "nodes"));
 
     # How many nodes?
-    $length = [$nodeArray length];
+    $length = json_length($nodeArray);
     #println("Number of nodes: $length");
 
     # Iterate through all nodes and add to appropriate array
@@ -34,9 +34,9 @@ sub parseNodes {
         %node = %();
 
         # Get id, type, label fields from each node
-        $id = [[$nodeArray get: $i] get: "id"];
-        $type = [[$nodeArray get: $i] get: "type"];
-        $label = [[$nodeArray get: $i] get: "label"];
+        $id = json_value(json_value($nodeArray, $i), "id");
+        $type = json_value(json_value($nodeArray, $i), "type");
+        $label = json_value(json_value($nodeArray, $i), "label");
 
         %node["id"] = $id;
         %node["label"] = $label;
@@ -61,23 +61,24 @@ sub parseEdges {
     $json = $1;
 
     # Create new JSONObject from string
-    $obj = [new JSONObject: $json];
+    $obj = new_jsonobject($json);
 
     # Create new JSONArray from the "edges" key
-    $edgeArray = [new JSONArray: [$obj get: "edges"]];
+    $edgeArray = new_jsonarray(json_value($obj, "edges"));
+    $nodeArray = new_jsonarray(json_value($obj, "edges"));
 
     # How many edges?
-    $length = [$edgeArray length];
+    $length = json_length($edgeArray);
     #println("Number of edges: $length");
 
     for ($i = 0; $i < $length; $i++) {
         %edge = %();
 
         # Get id, label, source, target for each edge
-        $id = [[$edgeArray get: $i] get: "id"];
-        $label = [[$edgeArray get: $i] get: "label"];
-        $source = [[$edgeArray get: $i] get: "source"];
-        $target = [[$edgeArray get: $i] get: "target"];
+        $id = json_value(json_value($edgeArray, $i), "id");
+        $label = json_value(json_value($edgeArray, $i), "label");
+        $source = json_value(json_value($edgeArray, $i), "source");
+        $target = json_value(json_value($edgeArray, $i), "target");
 
         %edge["id"] = $id;
         %edge["label"] = $label;
